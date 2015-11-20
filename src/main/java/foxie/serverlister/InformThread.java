@@ -21,9 +21,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class InformThread extends Thread {
-   private static final String upstream  = "http://localhost";
-   private static final int    port      = 36937;
-   private static final byte[] MSG_BEGIN = {(byte) 0xAA, 0x55};
+   private static final String upstream = "http://localhost";
+   private static final int    port     = 36937;
 
    private static final String uri = "/remote/?command=%s";
 
@@ -35,6 +34,7 @@ public class InformThread extends Thread {
    public InformThread() {
 
       messages = new LinkedBlockingQueue<MessageBase>();
+      setName("Server Lister notification thread");
 
       executorService = Executors.newSingleThreadScheduledExecutor();
       executorService.scheduleAtFixedRate(new Runnable() {
@@ -59,6 +59,11 @@ public class InformThread extends Thread {
                FoxLog.error("Error sending message to the upstream server!");
                e.printStackTrace();
             }
+         }
+         try {
+            Thread.sleep(5000);
+         } catch (InterruptedException e) {
+            e.printStackTrace();
          }
       }
    }

@@ -12,18 +12,15 @@ import foxie.serverlister.messages.MessageModList;
 import foxie.serverlister.messages.MessagePlayerJoined;
 import foxie.serverlister.messages.MessagePlayerLeft;
 
-@Mod(modid = ServerLister.MODID, name = ServerLister.NAME, version = ServerLister.VERSION, dependencies = "required-after:FoxieLib@[1.0,)")
+@Mod(modid = ServerLister.MODID, name = ServerLister.NAME, version = ServerLister.VERSION, dependencies = "required-after:FoxieLib")
 public class ServerLister implements IFoxieMod {
    public static final String MODID   = "serverlister";
    public static final String NAME    = "ServerLister";
    public static final String VERSION = "@VERSION@";
-
-   @Mod.Instance(MODID)
-   public static ServerLister INSTANCE;
-
    public static Config config;
-
    public static InformThread informThread;
+   @Mod.Instance(MODID)
+   public ServerLister INSTANCE;
 
    public ServerLister() {
    }
@@ -49,7 +46,7 @@ public class ServerLister implements IFoxieMod {
    @Mod.EventHandler
    public void serverStarted(FMLServerStartedEvent event) {
       informThread = new InformThread();
-      informThread.run();
+      informThread.start();
 
       InformThread.addMessage(new MessageMOTD());
       InformThread.addMessage(new MessageModList());
