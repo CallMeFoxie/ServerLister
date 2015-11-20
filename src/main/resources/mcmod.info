@@ -1,0 +1,16 @@
+[
+{
+  "modid": "serverlister",
+  "name": "Server Lister",
+  "description": "Lists your server on mcservercentral.com",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["CallMeFoxie"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
