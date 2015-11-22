@@ -28,6 +28,7 @@ public class ServerLister implements IFoxieMod {
    @Mod.EventHandler
    public void preinit(FMLPreInitializationEvent event) {
       config = new Config(event.getSuggestedConfigurationFile().getAbsolutePath());
+      informThread = new InformThread(event.getSuggestedConfigurationFile().getPath());
    }
 
    @Mod.EventHandler
@@ -45,7 +46,6 @@ public class ServerLister implements IFoxieMod {
 
    @Mod.EventHandler
    public void serverStarted(FMLServerStartedEvent event) {
-      informThread = new InformThread();
       informThread.start();
 
       InformThread.addMessage(new MessageMOTD());
