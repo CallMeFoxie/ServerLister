@@ -17,10 +17,10 @@ public class ServerLister implements IFoxieMod {
    public static final String MODID   = "serverlister";
    public static final String NAME    = "ServerLister";
    public static final String VERSION = "@VERSION@";
-   public static Config config;
+   public static Config       config;
    public static InformThread informThread;
    @Mod.Instance(MODID)
-   public ServerLister INSTANCE;
+   public        ServerLister INSTANCE;
 
    public ServerLister() {
    }
@@ -29,6 +29,10 @@ public class ServerLister implements IFoxieMod {
    public void preinit(FMLPreInitializationEvent event) {
       config = new Config(event.getSuggestedConfigurationFile().getAbsolutePath());
       informThread = new InformThread(event.getSuggestedConfigurationFile().getPath());
+
+
+      InformThread.addMessage(new MessageMOTD());
+      InformThread.addMessage(new MessageModList());
    }
 
    @Mod.EventHandler
@@ -46,10 +50,9 @@ public class ServerLister implements IFoxieMod {
 
    @Mod.EventHandler
    public void serverStarted(FMLServerStartedEvent event) {
-      informThread.start();
-
-      InformThread.addMessage(new MessageMOTD());
-      InformThread.addMessage(new MessageModList());
+      if (!informThread.isAlive()) {
+         informThread.start();
+      }
    }
 
    @Mod.EventHandler
