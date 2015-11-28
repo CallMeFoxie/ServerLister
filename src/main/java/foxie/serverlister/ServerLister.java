@@ -48,6 +48,11 @@ public class ServerLister implements IFoxieMod {
       return config;
    }
 
+   @Override
+   public String getModId() {
+      return MODID;
+   }
+
    @Mod.EventHandler
    public void serverStarted(FMLServerStartedEvent event) {
       if (!informThread.isAlive()) {
