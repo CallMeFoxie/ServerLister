@@ -25,7 +25,13 @@ configFile.withReader {
     project.ext.config = new ConfigSlurper().parse prop
 }
 
-version = "${config.minecraft_version}-${config.mod_version}"
+def VersionBuild = 0
+if (System.getenv("BUILD_NUMBER") != null) {
+    def buildver = System.getenv("BUILD_NUMBER")
+    VersionBuild = "-${buildver}"
+}
+
+version = "${config.minecraft_version}-${config.mod_version}${VersionBuild}"
 group = "foxie.serverlister"
 archivesBaseName = "ServerLister"
 
@@ -69,3 +75,55 @@ artifacts {
 }
 
 build.dependsOn deobfJar
+
+// deployment
+configurations { deployerJars }
+dependencies { deployerJars "org.apache.maven.wagon:wagon-ssh:2.2" }
+
+apply plugin: 'maven'
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            configuration = configurations.deployerJars
+
+            repository(url: "scp://maven.foxiehost.lan/home/maven/public/") {
+                authentication(userName: "maven", password: "maven")
+            }
+
+            pom {
+                groupId = project.group
+                version = project.version
+                artifactId = project.archivesBaseName
+                project {
+                    name project.archivesBaseName
+                    packaging 'jar'
+                    description 'ServerLister'
+                    url 'http://foxiemods.com/ServerLister'
+                    scm {
+                        url 'https://github.com/CallMeFoxie/ServerLister'
+                        connection 'scm:git:git@github.com:CallMeFoxie/ServerLister.git'
+                        developerConnection 'scm:git:git@github.com:CallMeFoxie/ServerLister.git'
+                    }
+                    issueManagement {
+                        system 'github'
+                        url 'https://github.com/CallMeFoxie/ServerLister/issues'
+                    }
+                    licenses {
+                        license {
+                            name 'TBD'
+                            url 'https://does-not-exist'
+                            distribution 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id 'CallMeFoxie'
+                            name 'CallMeFoxie'
+                            roles { role 'developer' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
