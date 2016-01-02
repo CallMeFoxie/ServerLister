@@ -32,7 +32,7 @@ if (System.getenv("BUILD_NUMBER") != null) {
 }
 
 version = "${config.minecraft_version}-${config.mod_version}${VersionBuild}"
-group = "foxie.serverlister"
+group = "foxie"
 archivesBaseName = "ServerLister"
 
 minecraft {
@@ -45,9 +45,14 @@ minecraft {
 }
 
 repositories {
+    maven {
+        name "Foxiehost"
+        url "http://maven.foxiehost.eu"
+    }
 }
 
 dependencies {
+    compile "foxie:FoxieLib:1.7.10-1.0-8:deobf"
 }
 
 processResources
